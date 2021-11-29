@@ -3,15 +3,16 @@ package com.example.mspeventregistration.event;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 @RestController
+@RequestMapping("/api")
 @CrossOrigin
 @RequiredArgsConstructor
 public class EventController {
@@ -35,6 +36,19 @@ public class EventController {
                 .map(logoStore::unsetContent)
                 .flatMap(saveLogo(logo))
                 .getOrElseThrow(() -> new RuntimeException("an error happened updating the logo"));
+    }
+
+    @GetMapping("/logo/{id}")
+    public Resource getLogoById(@PathVariable("id") UUID id){
+        return logoStore.getResource(id);
+    }
+
+    @GetMapping("/event/{id}/logo")
+    public Resource getLogoByEventId(@PathVariable("id") long id){
+        return Option.ofOptional(eventRepo.findById(id))
+                .onEmpty(() -> {throw new RuntimeException("event not found");})
+                .map(logoStore::getResource)
+                .getOrElseThrow(() -> new RuntimeException("logo resource couldn't be retrieved"));
     }
 
     private Function<Event, Option<? extends Event>> saveLogo(MultipartFile logo) {
