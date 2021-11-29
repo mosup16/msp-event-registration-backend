@@ -1,8 +1,7 @@
 package com.example.mspeventregistration.event;
 
 import com.example.mspeventregistration.attendant.Attendant;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
 
@@ -12,8 +11,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,10 +24,14 @@ public class Event {
     @Lob
     private String description;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private LocalDateTime registrationEndDate;
-    private LocalDateTime registrationStartDate;
+    @Builder.Default
+    private LocalDateTime startDate = LocalDateTime.now();
+    @Builder.Default
+    private LocalDateTime endDate = LocalDateTime.now();
+    @Builder.Default
+    private LocalDateTime registrationEndDate = LocalDateTime.now();
+    @Builder.Default
+    private LocalDateTime registrationStartDate = LocalDateTime.now();
 
     @Builder.Default
     private @ContentId UUID logoId = UUID.randomUUID();

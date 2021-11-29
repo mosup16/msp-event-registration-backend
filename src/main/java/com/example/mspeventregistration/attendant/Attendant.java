@@ -1,8 +1,7 @@
 package com.example.mspeventregistration.attendant;
 
 import com.example.mspeventregistration.event.Event;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,8 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Attendant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,8 +22,6 @@ public class Attendant {
     @Email
     @NotEmpty
     private String email;
-
-    @NotEmpty
     private long phone;
 
     @ManyToOne
