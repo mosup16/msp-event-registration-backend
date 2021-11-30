@@ -20,7 +20,7 @@ public class EventController {
     private final EventRepo eventRepo;
     private final LogoStore logoStore;
 
-    @PostMapping("/event/{id}/logo")
+    @PostMapping("/events/{id}/logo")
     @Transactional
     public Event addLogo(@RequestParam("logo") MultipartFile logo,@PathVariable("id") long eventId) {
         return Option.ofOptional(eventRepo.findById(eventId))
@@ -28,7 +28,7 @@ public class EventController {
                 .getOrElseThrow(() -> new RuntimeException("error while adding the logo"));
     }
 
-    @PutMapping("/event/{id}")
+    @PutMapping("/events/{id}")
     @Transactional
     public Event updateImage(@RequestParam("logo") MultipartFile logo,@PathVariable("id") long eventId){
         return Option.ofOptional(eventRepo.findById(eventId))
@@ -43,7 +43,7 @@ public class EventController {
         return logoStore.getResource(id);
     }
 
-    @GetMapping("/event/{id}/logo")
+    @GetMapping("/events/{id}/logo")
     public Resource getLogoByEventId(@PathVariable("id") long id){
         return Option.ofOptional(eventRepo.findById(id))
                 .onEmpty(() -> {throw new RuntimeException("event not found");})

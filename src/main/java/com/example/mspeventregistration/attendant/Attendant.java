@@ -22,7 +22,7 @@ public class Attendant {
     @Email
     @NotEmpty
     private String email;
-    private Long phone;
+    private long phone;
 
     @ManyToOne
     private Event event;

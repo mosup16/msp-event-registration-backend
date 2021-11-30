@@ -1,9 +1,16 @@
 package com.example.mspeventregistration.event;
 
 import com.example.mspeventregistration.attendant.Attendant;
+import com.example.mspeventregistration.event.form.Form;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.*;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
+import org.springframework.data.rest.core.config.Projection;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +23,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@TypeDefs({@TypeDef(name = "json", typeClass = JsonStringType.class)})
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,15 +42,19 @@ public class Event {
     private LocalDateTime registrationStartDate = LocalDateTime.now();
 
     @Builder.Default
-    private @ContentId UUID logoId = UUID.randomUUID();
-    private @ContentLength Long logoLength;
+    private @ContentId
+    UUID logoId = UUID.randomUUID();
+    private @ContentLength
+    Long logoLength;
     @Builder.Default
     private String mimetype = "image";
 
 
-//    @Embedded
-//    private Form form;
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
+    private Form form;
 
     @OneToMany(mappedBy = "event")
     private List<Attendant> attendants;
 }
+
