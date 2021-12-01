@@ -19,6 +19,9 @@ public class Attendant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotEmpty
+    private String name;
+
     @Email
     @NotEmpty
     private String email;
