@@ -12,5 +12,6 @@ public interface AttendantRepo extends JpaRepository<Attendant,Long> {
     Option<Attendant> findAttendantByPhone(Long phone);
     Option<Attendant> findAttendantByName(String name);
     Option<Attendant> findAttendantByCode(UUID code);
+    boolean existsByCode(UUID code);
 
 }
