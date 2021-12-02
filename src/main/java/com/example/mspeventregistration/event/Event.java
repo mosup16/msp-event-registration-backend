@@ -2,7 +2,6 @@ package com.example.mspeventregistration.event;
 
 import com.example.mspeventregistration.attendant.Attendant;
 import com.example.mspeventregistration.event.form.Form;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.*;
 import org.hibernate.annotations.Type;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
-import org.springframework.data.rest.core.config.Projection;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -54,7 +52,16 @@ public class Event {
     @Column(columnDefinition = "json")
     private Form form;
 
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
+    private List<Information> additionalInformation;
+
     @OneToMany(mappedBy = "event")
     private List<Attendant> attendants;
 }
 
+@Data
+class Information {
+    private String name;
+    private String value;
+}

@@ -1,7 +1,12 @@
 package com.example.mspeventregistration.attendant;
 
 import com.example.mspeventregistration.event.Event;
+import com.example.mspeventregistration.event.form.Form;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.*;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,6 +19,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@TypeDefs({@TypeDef(name = "json", typeClass = JsonStringType.class)})
 public class Attendant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +27,10 @@ public class Attendant {
 
     @NotEmpty
     private String name;
+
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
+    private RegistrationInfo registrationInfo;
 
     @Email
     @NotEmpty

@@ -19,17 +19,17 @@ public class Form {
 @Data
 class Field {
     private String name;
-    private String value;
+//    private String value;
     private List<ConstraintParamsPair> constraints = new LinkedList<>();
 
     public void addConstraints(String name,Map<String,String> params){
         constraints.add(new ConstraintParamsPair(name,params));
     }
 
-    public boolean validateConstraints() {
+    public boolean validateConstraints(String value) {
         return constraints.stream().map(constraintParamsPair -> SupportedConstraints
                 .getByName(constraintParamsPair.getName())
-                .isSatisfied(this.getValue(),constraintParamsPair.getParams())
+                .isSatisfied(value,constraintParamsPair.getParams())
         ).allMatch(isSatisfied -> isSatisfied);
     }
 
